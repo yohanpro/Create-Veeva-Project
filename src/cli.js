@@ -1,6 +1,6 @@
 import arg from "arg";
 import inquirer from "inquirer";
-
+import { createProject } from "./main";
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
@@ -19,7 +19,17 @@ function parseArgumentsIntoOptions(rawArgs) {
   };
 }
 async function promptForMissingOptions(options) {
+  const defaultTemplate = "JavaScript";
   const questions = [];
+  if (!options.template) {
+    questions.push({
+      type: "list",
+      name: "template",
+      message: "Please choose which project template to use",
+      choices: ["JavaScript", "TypeScript"],
+      default: defaultTemplate
+    });
+  }
   if (!options.git) {
     questions.push({
       type: "confirm",
@@ -53,11 +63,13 @@ async function promptForMissingOptions(options) {
   return {
     ...options,
     git: options.git || answers.git,
+    template: options.template || answers.template,
     ...answers
   };
 }
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
+  await createProject(options);
   console.log(options);
 }
