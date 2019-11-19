@@ -1,5 +1,6 @@
 import arg from "arg";
 import inquirer from "inquirer";
+import chalk from 'chalk';
 import {
   createProject
 } from "./main";
@@ -41,7 +42,7 @@ async function promptForMissingOptions(options) {
     validate: function (value) {
       var valid = !isNaN(parseFloat(value));
       if (!valid) {
-        console.log("Please enter number")
+        console.log("\n %s Please enter number", chalk.redBright.bold("ERROR"))
         process.exit(1);
       } else {
         return true

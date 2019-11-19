@@ -9,13 +9,20 @@ import {
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
+let DIRECTORIES = {
+	rootDir: '',
+	presentationDir: ''
+};
+
 async function copyTemplateFiles(options) {
-	return copy(options.templateDirectory, options.targetDirectory);
+	fs.mkdirSync(DIRECTORIES.presentationDir)
+	copy(options.templateDirectory, DIRECTORIES.rootDir);
+	return;
 }
 export async function createProject(options) {
 	options = {
 		...options,
-		targetDirectory: options.targetDirectory || `${process.cwd()}/${options.template}/${options.presentation}`
+		targetDirectory: options.targetDirectory || `${process.cwd()}/${options.template}`
 	};
 	const currentUrl = `${process.cwd()}/${options.template}`;
 	const currentFileUrl =
@@ -33,40 +40,10 @@ export async function createProject(options) {
 			process.exit(1);
 		}
 	}
+	DIRECTORIES = {
+		rootDir: `${process.cwd()}/${options.template}`,
+		presentationDir: `${process.cwd()}/${options.template}/${options.presentation}`
+	}
 	await copyTemplateFiles(options);
 	console.log('%s Project ready', chalk.green.bold('DONE'));
 }
-
-// async function copyTemplateFiles(options) {
-//   return copy(options.templateDirectory, options.targetDirectory);
-// }
-
-// export async function createProject(options) {
-//   options = {
-//     ...options,
-//     targetDirectory: options.targetDirectory || process.cwd()
-//   };
-
-//   const currentFileUrl =
-//     import.meta.url; // file:///Users/gim-yohan/Projects/Veeva_CLM-boilerplate_3.0/src/main.js
-//   const templateDir = path.resolve(
-//     new URL(currentFileUrl).pathname, // /Users/gim-yohan/Projects/Veeva_CLM-boilerplate_3.0/src/main.js
-//     '../../templates'
-//   );
-//   options.templateDirectory = templateDir; // /Users/gim-yohan/Projects/Veeva_CLM-boilerplate_3.0/templates/yohan
-//   console.log(`currentFileUrl : ${currentFileUrl}`);
-//   console.log(`new URL  : ${new URL(currentFileUrl).pathname}`);
-//   console.log(`templateDir  : ${templateDir}`);
-//   try {
-//     await access(templateDir, fs.constants.R_OK);
-//   } catch (err) {
-//     console.error('%s Invalid template name', chalk.red.bold('ERROR'));
-//     process.exit(1);
-//   }
-
-//   console.log('Copy project files');
-//   await copyTemplateFiles(options);
-
-//   console.log('%s Project ready', chalk.green.bold('DONE'));
-//   return true;
-// }
