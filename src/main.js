@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import ncp from 'ncp';
 import path from 'path';
+import shell from 'shelljs';
 import {
 	promisify
 } from 'util';
@@ -15,19 +16,15 @@ export let DIRECTORIES = {
 	presentationDir: ''
 };
 
-async function copyTemplateFiles(options) {
-	fs.mkdirSync(DIRECTORIES.presentationDir);
-	copy(options.templateDirectory, DIRECTORIES.rootDir);
-	return;
-}
+//make main createProject
 
 export async function createProject(options) {
 	options = {
 		...options,
-		targetDirectory: options.targetDirectory || `${process.cwd()}/${options.template}`
+		targetDirectory: options.targetDirectory || `${process.cwd()}/${options.rootFolder}`
 	};
-	console.log(`currentURL : ${options.template === ''}`)
-	const currentUrl = `${process.cwd()}/${options.template}`;
+
+	const currentUrl = `${process.cwd()}/${options.rootFolder}`;
 	const currentFileUrl =
 		import.meta.url; // file:///Users/gim-yohan/Projects/Veeva_CLM-boilerplate_3.0/src/main.js
 	const templateDir = path.resolve(
@@ -36,24 +33,21 @@ export async function createProject(options) {
 	);
 	options.templateDirectory = templateDir;
 	try {
-		console.log(currentUrl)
-		access(currentUrl)
+		await access(currentUrl, fs.constants.R_OK);
 	} catch (err) {
 		if (err.code === 'EEXIST') {
 			console.log('%s Project is already exist or Duplicate', chalk.red.bold('ERROR'));
 			process.exit(1);
 		}
 	}
-
-	if (options.template !== '') {
-		fs.mkdirSync(currentUrl);
-	}
+	fs.mkdirSync(currentUrl);
 
 	DIRECTORIES = {
-		rootDir: `${process.cwd()}/${options.template}`,
-		presentationDir: `${process.cwd()}/${options.template}/${options.presentation}`
+		rootDir: `${process.cwd()}/${options.rootFolder}`,
+		presentationDir: `${process.cwd()}/${options.rootFolder}/${options.presentation}`
 	};
-	// await copyTemplateFiles(options);
+
+
 	await makeFolder.makeRootFolder(options);
 	await makeFolder.makeSubPresnetationFolder(options);
 	await makeFolder.makeSlides(options);

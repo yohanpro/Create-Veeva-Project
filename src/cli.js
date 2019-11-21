@@ -10,23 +10,25 @@ function parseArgumentsIntoOptions(rawArgs) {
     "--git": Boolean,
     "--install": Boolean,
     '--yes': Boolean,
+    "--seperate": Boolean,
     "-y": '--yes',
     "-i": "--install",
+    "-s": '--seperate'
   }, {
     argv: rawArgs.slice(2)
   });
   return {
     skipPrompts: args["--yes"] || false,
     git: args["--git"] || false,
-    template: args._[0],
+    rootFolder: args._[0],
     product: '',
-    seperate: false,
+    seperate: args["--seperate"] || false,
     runInstall: args["--install"] || false
   };
 }
 async function promptForMissingOptions(options) {
 
-  const defaultName = "Veeva-project";
+  const defaultName = "Veeva-project_1.0";
 
   if (options.skipPrompts) {
     return {
@@ -34,9 +36,9 @@ async function promptForMissingOptions(options) {
       presentation: defaultName,
       slide: 10,
       product: 'Veeva-product',
-      seperate: false,
+      seperate: true,
       git: false,
-      template: ''
+      rootFolder: 'Veeva-Project'
     }
   }
   const questions = [];
@@ -44,7 +46,14 @@ async function promptForMissingOptions(options) {
   questions.push({
     type: "input",
     name: "presentation",
-    message: "Name of Veeva root Presentation"
+    message: "Name of Veeva root Presentation",
+    validate: function (value) {
+      if (!value) {
+        console.log("\n %s Please enter the presentation", chalk.redBright.bold("ERROR"))
+      } else {
+        return true;
+      }
+    }
   });
   questions.push({
     type: "number",
@@ -83,10 +92,10 @@ async function promptForMissingOptions(options) {
 
   return {
     ...options,
+    ...answers,
     git: options.git || answers.git,
-    template: options.template || answers.template,
+    rootFolder: options.rootFolder || answers.rootFolder,
     presentation: options.presentation || answers.presentation,
-    ...answers
   };
 }
 export async function cli(args) {
