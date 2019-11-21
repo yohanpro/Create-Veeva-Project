@@ -38,7 +38,6 @@ const copyGeneralFile = async options => {
 	return copy(options.templateDirectory, options.targetDirectory);
 }
 
-
 //make main createProject
 export async function createProject(options) {
 	options = {
@@ -83,7 +82,6 @@ export async function createProject(options) {
 			title: "make gulpfile.js",
 			task: () => makeGulpfileJs(options),
 		},
-
 		{
 			title: 'Initalize git',
 			task: () => initGit(options),
