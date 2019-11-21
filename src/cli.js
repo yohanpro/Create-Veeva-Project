@@ -55,6 +55,7 @@ async function promptForMissingOptions(options) {
       }
     }
   });
+
   questions.push({
     type: "number",
     name: "slide",
