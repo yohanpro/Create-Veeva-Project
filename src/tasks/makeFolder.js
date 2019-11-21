@@ -1,0 +1,26 @@
+import chalk from 'chalk';
+import fs from 'fs';
+import {
+	DIRECTORIES
+} from '../main';
+import shell from 'shelljs';
+
+export const makeRootFolder = async (options) => {
+
+	shell.cd(DIRECTORIES.rootDir);
+	shell.mkdir(options.presentation)
+	console.log(`%s Process.cwd() : ${process.cwd()}`, chalk.redBright.bold('hihihi'));
+	return;
+};
+
+export const makeSubPresnetationFolder = async (options) => {
+	if (!options.seperate) {
+		return;
+	}
+	shell.cd(DIRECTORIES.presentationDir);
+	shell.mkdir([`${options.presentation}_MAIN`, `${options.presentation}_ADD`]);
+};
+
+export const makeSlides = async (options) => {
+
+};

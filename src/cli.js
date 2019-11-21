@@ -73,7 +73,14 @@ async function promptForMissingOptions(options) {
   questions.push({
     type: "input",
     name: "product",
-    message: "Name of Veeva Product"
+    message: "Name of Veeva Product",
+    validate: function (value) {
+      if (!value) {
+        console.log("\n %s Please enter the Veeva Product", chalk.redBright.bold("ERROR"))
+      } else {
+        return true;
+      }
+    }
   });
   questions.push({
     type: "confirm",

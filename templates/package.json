@@ -1,0 +1,30 @@
+{
+    "name": "",
+    "version": "1.0.0",
+    "description": "essential packages for clm development",
+    "main": "",
+    "scripts": {
+        "gulp": "./node_modules/gulp/bin/gulp.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "keywords": [
+        "clm"
+    ],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "",
+    "dependencies": {
+        "gulp": "^4.0.2",
+        "shelljs": "^0.8.3"
+    },
+    "devDependencies": {
+        "gulp-watch": "^5.0.1",
+        "del": "^5.1.0"
+    }
+}
