@@ -13,6 +13,9 @@ import {
 } from 'util';
 import * as makeFolder from './tasks/makeFolder';
 import {
+	makeSlides
+} from './tasks/makeSlides';
+import {
 	makeGulpfileJs
 } from './tasks/makeGulpfile';
 const access = promisify(fs.access);
@@ -79,8 +82,12 @@ export async function createProject(options) {
 			task: () => copyGeneralFile(options),
 		},
 		{
-			title: "make gulpfile.js",
+			title: "Make Gulpfile.js",
 			task: () => makeGulpfileJs(options),
+		},
+		{
+			title: "Make Slides Folders",
+			task: () => makeSlides(options),
 		},
 		{
 			title: 'Initalize git',

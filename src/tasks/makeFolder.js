@@ -20,7 +20,3 @@ export const makeSubPresnetationFolder = async (options) => {
 	shell.cd(DIRECTORIES.presentationDir);
 	shell.mkdir([`${options.presentation}_MAIN`, `${options.presentation}_ADD`]);
 };
-
-export const makeSlides = async (options) => {
-
-};
