@@ -6,10 +6,8 @@ import {
 import shell from 'shelljs';
 
 export const makeRootFolder = async (options) => {
-
 	shell.cd(DIRECTORIES.rootDir);
 	shell.mkdir(options.presentation)
-	console.log(`%s Process.cwd() : ${process.cwd()}`, chalk.redBright.bold('hihihi'));
 	return;
 };
 

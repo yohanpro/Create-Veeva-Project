@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-import fs from 'fs';
 import {
     DIRECTORIES
 } from '../main';
@@ -49,12 +47,15 @@ const makeSlidesFolders = async (options) => {
     } else {
         shell.cd(DIRECTORIES.presentationDir);
     }
+    // I didn't consider slides more than 999. if larger than that, that means your project is insane.
     for (let i = 0; i < numOfSlideCount; i++) {
         let name = "";
         if (i < 10) {
             name = "00" + i;
-        } else if (i >= 10) {
+        } else if (i >= 10 && i < 100) {
             name = "0" + i;
+        } else if (i > 100) {
+            name = +i;
         }
         shell.mkdir(`${options.presentation}_${name}`);
     }

@@ -22,7 +22,7 @@ const {
 const path = require('path');
 const baseDir = path.resolve(process.cwd());
 
-const rootFolder = baseDir + "/${options.presentation}";
+const rootFolder = path.join(baseDir, ${options.presentation})
 
 //gulp로 shared파일 자동 생성
 

@@ -18,6 +18,10 @@ import {
 import {
 	makeGulpfileJs
 } from './tasks/makeGulpfile';
+import {
+	inputAssets
+} from './tasks/inputAssets';
+
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
@@ -88,6 +92,10 @@ export async function createProject(options) {
 		{
 			title: "Make Slides Folders",
 			task: () => makeSlides(options),
+		},
+		{
+			title: "Input Assets(Html, Css, Js basic setting)",
+			task: () => inputAssets(options),
 		},
 		{
 			title: 'Initalize git',
