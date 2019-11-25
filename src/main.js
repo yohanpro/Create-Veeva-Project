@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import fs from 'fs';
 import ncp from 'ncp';
 import path from 'path';
-import shell from 'shelljs';
 import execa from 'execa';
 import Listr from 'listr';
 import {
@@ -21,7 +20,9 @@ import {
 import {
 	inputAssets
 } from './tasks/inputAssets';
-
+import {
+	makeSharedJS
+} from './tasks/makeSharedJs';
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
@@ -96,6 +97,10 @@ export async function createProject(options) {
 		{
 			title: "Input Assets(Html, Css, Js basic setting)",
 			task: () => inputAssets(options),
+		},
+		{
+			title: "Make shared folder inside js, ex)config.js, mt.js)",
+			task: () => makeSharedJS(options),
 		},
 		{
 			title: 'Initalize git',
