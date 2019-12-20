@@ -23,6 +23,12 @@ import {
 import {
 	makeSharedJS
 } from './tasks/makeSharedJs';
+import {
+	makeShfilesJS
+} from './tasks/makeShfile';
+import {
+	makeCSVFile
+} from './tasks/makeCSVFile';
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
@@ -101,6 +107,14 @@ export async function createProject(options) {
 		{
 			title: "Make shared folder inside js, ex)config.js, mt.js)",
 			task: () => makeSharedJS(options),
+		},
+		{
+			title: "Make sh files",
+			task: () => makeShfilesJS(options)
+		},
+		{
+			title: "Make a CSV file",
+			task: () => makeCSVFile(options)
 		},
 		{
 			title: 'Initalize git',
