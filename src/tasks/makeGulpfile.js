@@ -3,6 +3,9 @@ import shell from 'shelljs';
 import {
   DIRECTORIES
 } from '../main';
+import {
+  strict
+} from 'assert';
 
 export const makeGulpfileJs = async options => {
   const gulpfile = `
@@ -22,27 +25,47 @@ const {
 const path = require('path');
 const baseDir = path.resolve(process.cwd());
 
-const rootFolder = path.join(baseDir, ${options.presentation})
+const rootFolder = path.join(baseDir, "${options.presentation}")
 
 //gulp로 shared파일 자동 생성
 
 gulp.task("watch", function () {
     watch(baseDir + "/shared/**/*", gulp.series("gen-shared", done => done()));
 });
+${getSharedStr(options)}
 
-gulp.task("gen-shared", function(done) {
-  shell.ls(rootFolder).forEach(presentation => {
-    shell.cd(rootFolder);
-    shell.cp("-Rf", baseDir + "/shared", presentation);
-  });
-  done();
-});
 gulp.task("default", gulp.series("gen-shared"));
 `;
   shell.cd(DIRECTORIES.rootDir);
   fs.writeFileSync('gulpfile.js', gulpfile, 'utf8', err => console.log(err))
 }
 
+const getSharedStr = (options) => {
+  let str = '';
+
+  if (options.seperate) {
+    str = ` gulp.task("gen-shared", function(done) {
+      shell.ls(rootFolder).forEach(presentation => {
+        shell.cd(rootFolder);
+        shell.cp("-Rf", baseDir + "/shared", presentation);
+      });
+      done();
+    });
+    `
+  } else {
+    str = ` gulp.task("gen-shared", function (done) {
+
+      shell.cd(rootFolder);
+      shell.cp("-Rf", baseDir + "/shared", rootFolder);
+    
+      done();
+    });
+    `
+  }
+
+
+  return str
+}
 const getPresentation = (options) => {
   let presentation = [];
   if (options.seperate) {
