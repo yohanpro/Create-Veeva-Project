@@ -1,6 +1,6 @@
 {
-  "name": "Veeva_CLM-boilerplate_3.0",
-  "version": "1.0.0",
+  "name": "create-veeva-project",
+  "version": "1.0.1",
   "description": "A CLI to make Veeva Projects",
   "main": "src/index.js",
   "bin": {
