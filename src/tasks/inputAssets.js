@@ -10,51 +10,50 @@ export const inputAssets = async (options) => {
     shell.cd(DIRECTORIES.presentationDir);
     shell.ls(DIRECTORIES.presentationDir).forEach(el => {
         if (options.seperate) {
-            const subPresentationDir = path.join(DIRECTORIES.presentationDir, el)
+            const subPresentationDir = path.join(DIRECTORIES.presentationDir, el);
             shell.ls(subPresentationDir).forEach(slide => {
                 const slidesDir = path.join(subPresentationDir, slide);
                 shell.cd(slidesDir);
                 fs.writeFileSync("index.html", makeHtml(slide), "utf8");
-                shell.mkdir(['css', 'js']);
+                shell.mkdir(['css', 'js', 'images']);
                 shell.cd('css');
                 fs.writeFileSync("styles.css", "", "utf8");
                 shell.cd('..');
                 shell.cd('js');
                 fs.writeFileSync('local.js', "", 'utf8');
-                shell.cd('../..')
+                shell.cd('../..');
             });
         } else {
             const slidesDir = path.join(DIRECTORIES.presentationDir, el);
             shell.cd(slidesDir);
             fs.writeFileSync("index.html", makeHtml(el), "utf8");
-            shell.mkdir(['css', 'js']);
+            shell.mkdir(['css', 'js', 'images']);
             shell.cd('css');
             fs.writeFileSync("styles.css", "", "utf8");
             shell.cd('..');
             shell.cd('js');
             fs.writeFileSync('local.js', "", 'utf8');
-            shell.cd('..')
+            shell.cd('..');
         }
     });
-}
+};
 
 const makeCssJS = (seperate, el) => {
-    const subPresentationDir = path.join(DIRECTORIES.presentationDir, el)
+    const subPresentationDir = path.join(DIRECTORIES.presentationDir, el);
     shell.ls(subPresentationDir).forEach(slide => {
-        console.log(`subPresentationDir :${subPresentationDir}`)
         //if main and Add is not seperated, slide Directory will be directly under the right below presentation.
-        const slidesDir = seperate ? path.join(subPresentationDir, slide) : subPresentationDir
+        const slidesDir = seperate ? path.join(subPresentationDir, slide) : subPresentationDir;
         shell.cd(slidesDir);
         fs.writeFileSync("index.html", makeHtml(slide), "utf8");
-        shell.mkdir(['css', 'js']);
+        shell.mkdir(['css', 'js', "images"]);
         shell.cd('css');
         fs.writeFileSync("styles.css", "", "utf8");
         shell.cd('..');
         shell.cd('js');
         fs.writeFileSync('local.js', "", 'utf8');
-        shell.cd('../..')
+        shell.cd('../..');
     });
-}
+};
 const makeHtml = slide => {
     let data = `<!DOCTYPE html>
     <html lang="en">
@@ -64,7 +63,7 @@ const makeHtml = slide => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="stylesheet" href="../shared/css/styles.css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/styles.css">
         <title>${slide}</title>
     </head>
     

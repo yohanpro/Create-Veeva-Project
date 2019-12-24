@@ -1,35 +1,35 @@
 import fs from 'fs';
 import shell from 'shelljs';
 import {
-    DIRECTORIES
+  DIRECTORIES
 } from '../main';
 
 
 export const makeShfilesJS = async options => {
 
 
-    console.log(options.targetDirectory)
-    shell.cd(options.targetDirectory);
-    let shStr = "";
-    let sh_thumb_str = "";
+  console.log(options.targetDirectory);
+  shell.cd(options.targetDirectory);
+  let shStr = "";
+  let sh_thumb_str = "";
 
-    if (options.seperate) {
-        shStr = sh_zip_SeperateMainAndAdd;
-        sh_thumb_str = sh_thumb_seperated;
-    } else {
-        shStr = sh_zip_Normal;
-        sh_thumb_str = sh_thumb_normal;
-    }
-    const shZipFile = shZip(options, shStr);
-    const shThumbFile = shThumb(options, sh_thumb_str);
+  if (options.seperate) {
+    shStr = sh_zip_SeperateMainAndAdd;
+    sh_thumb_str = sh_thumb_seperated;
+  } else {
+    shStr = sh_zip_Normal;
+    sh_thumb_str = sh_thumb_normal;
+  }
+  const shZipFile = shZip(options, shStr);
+  const shThumbFile = shThumb(options, sh_thumb_str);
 
 
 
-    fs.writeFile("gen-zip.sh", shZipFile, "utf8", err => {});
-    fs.writeFile("gen-thumb.sh", shThumbFile, "utf8", err => {});
-}
+  fs.writeFile("gen-zip.sh", shZipFile, "utf8", err => { });
+  fs.writeFile("gen-thumb.sh", shThumbFile, "utf8", err => { });
+};
 const shThumb = (options, sh_thumb_str) => {
-    let shThumbFile = `# Directory containing _MAIN and _ADD presentation folders
+  let shThumbFile = `# Directory containing _MAIN and _ADD presentation folders
   # 처음 'sh gen-thumb.sh'를 실행하는 거라면, 'brew install imagemagick' 설치
   
   PROJECT=${options.targetDirectory}
@@ -39,10 +39,10 @@ const shThumb = (options, sh_thumb_str) => {
   # Generate thumb files for each slide in the presentation
   ${sh_thumb_str}
   `;
-    return shThumbFile;
+  return shThumbFile;
 };
 const shZip = (options, shStr) => {
-    const shZipFile = `#!/bin/bash
+  const shZipFile = `#!/bin/bash
   
   # Directory for generated zip files
   OUT_DIR=${options.targetDirectory}/dist
@@ -56,6 +56,9 @@ const shZip = (options, shStr) => {
   # Shared file name specific to the project
   SHARED=${options.presentation}_Shared
   
+  # if folder doesn't exist make folders
+  mkdir -p dist
+  
   # Clean up old files inside output directory
   cd $OUT_DIR
   rm -r *
@@ -66,9 +69,9 @@ const shZip = (options, shStr) => {
   
   # Generate zip files for each slide in the presentation
   ${shStr}
-  
+
   `;
-    return shZipFile;
+  return shZipFile;
 };
 let sh_thumb_seperated = `
 cd $PROJECT

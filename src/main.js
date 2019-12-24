@@ -43,14 +43,14 @@ const initGit = async options => {
 		cwd: options.targetDirectory,
 	});
 	if (result.failed) {
-		return Promise.reject(new Error('Faild to initalize Git'))
+		return Promise.reject(new Error('Faild to initalize Git'));
 	}
 	return;
-}
+};
 
 const copyGeneralFile = async options => {
 	return copy(options.templateDirectory, options.targetDirectory);
-}
+};
 
 //make main createProject
 export async function createProject(options) {
@@ -82,51 +82,51 @@ export async function createProject(options) {
 	};
 
 	const tasks = new Listr([{
-			title: 'Make Root Folder & Sub presentation Folder',
-			task: () => {
-				makeFolder.makeRootFolder(options);
-				makeFolder.makeSubPresnetationFolder(options)
-			}
-		},
-		{
-			title: "Copy General files",
-			task: () => copyGeneralFile(options),
-		},
-		{
-			title: "Make Gulpfile.js",
-			task: () => makeGulpfileJs(options),
-		},
-		{
-			title: "Make Slides Folders",
-			task: () => makeSlides(options),
-		},
-		{
-			title: "Input Assets(Html, Css, Js basic setting)",
-			task: () => inputAssets(options),
-		},
-		{
-			title: "Make shared folder inside js, ex)config.js, mt.js)",
-			task: () => makeSharedJS(options),
-		},
-		{
-			title: "Make sh files",
-			task: () => makeShfilesJS(options)
-		},
-		{
-			title: "Make a CSV file",
-			task: () => makeCSVFile(options)
-		},
-		{
-			title: 'Initalize git',
-			task: () => initGit(options),
-		}, {
-			title: 'Install dependencies',
-			task: () => projectInstall({
-				cwd: options.targetDirectory
-			}),
-			skip: () => !options.runInstall ? 'Pass -- install to automatically install dependencies' : undefined
-		},
-	])
+		title: 'Make Root Folder & Sub presentation Folder',
+		task: () => {
+			makeFolder.makeRootFolder(options);
+			makeFolder.makeSubPresnetationFolder(options);
+		}
+	},
+	{
+		title: "Copy General files",
+		task: () => copyGeneralFile(options),
+	},
+	{
+		title: "Make Gulpfile.js",
+		task: () => makeGulpfileJs(options),
+	},
+	{
+		title: "Make Slides Folders",
+		task: () => makeSlides(options),
+	},
+	{
+		title: "Input Assets(Html, Css, Js basic setting)",
+		task: () => inputAssets(options),
+	},
+	{
+		title: "Make shared folder inside js, ex)config.js, mt.js)",
+		task: () => makeSharedJS(options),
+	},
+	{
+		title: "Make sh files",
+		task: () => makeShfilesJS(options)
+	},
+	{
+		title: "Make a CSV file",
+		task: () => makeCSVFile(options)
+	},
+	{
+		title: 'Initalize git',
+		task: () => initGit(options),
+	}, {
+		title: 'Install dependencies',
+		task: () => projectInstall({
+			cwd: options.targetDirectory
+		}),
+		// skip: () => !options.runInstall ? 'Pass -- install to automatically install dependencies' : undefined
+	},
+	]);
 
 	await tasks.run();
 	console.log('%s Project ready', chalk.greenBright.bold('Done'));
