@@ -4,7 +4,8 @@
     "description": "essential packages for clm development",
     "main": "",
     "scripts": {
-        "gulp": "./node_modules/gulp/bin/gulp.js"
+        "gulp": "./node_modules/gulp/bin/gulp.js",
+        "start": "gulp watch"
     },
     "repository": {
         "type": "git",

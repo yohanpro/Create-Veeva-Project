@@ -32,7 +32,7 @@ const shThumb = (options, sh_thumb_str) => {
   let shThumbFile = `# Directory containing _MAIN and _ADD presentation folders
   # 처음 'sh gen-thumb.sh'를 실행하는 거라면, 'brew install imagemagick' 설치
   
-  PROJECT=${options.targetDirectory}
+  PROJECT=${options.targetDirectory}/${options.presentation}
   
   SCN_DIR=${options.targetDirectory}/screenshots
   
