@@ -1,23 +1,21 @@
 import shell from 'shelljs';
 import fs from 'fs';
 import {
-    DIRECTORIES
+  DIRECTORIES
 } from '../main';
-import path from 'path'
+import path from 'path';
 
 
 export const makeSharedJS = async (options) => {
-    const rootSharedJSDir = path.join(DIRECTORIES.rootDir, 'shared', 'js');
-    shell.cd(rootSharedJSDir);
-    // await makeConfigJS(options);
-    // await makeMtJS(options);
-    fs.writeFileSync('config.js', makeConfigJS(options), 'utf8');
-    fs.writeFileSync('mt.js', makeMtJS(options), 'utf8');
-}
+  const rootSharedJSDir = path.join(DIRECTORIES.rootDir, 'shared', 'js');
+  shell.cd(rootSharedJSDir);
+  fs.writeFileSync('config.js', makeConfigJS(options), 'utf8');
+  fs.writeFileSync('mt.js', makeMtJS(options), 'utf8');
+};
 
 
 const makeConfigJS = (options) => {
-    let data = `
+  let data = `
     var com = com || {};
     com.vclm = com.vclm || {};
     com.vclm.main = {
@@ -30,23 +28,23 @@ const makeConfigJS = (options) => {
     ],
     pagesTitles: []
     };
-    ${options.seperate? makeAdd(options): "com.vclm.inputAnotherPresentation={}"}
+    ${options.seperate ? makeAdd(options) : "com.vclm.inputAnotherPresentation={}"}
     `;
 
-    return data;
-}
+  return data;
+};
 const getPresentationName = (options) => {
-    let name = '';
-    if (options.seperate) {
-        name = `${options.presentation}_MAIN`
-    } else {
-        name = options.presentation;
-    }
-    return name;
-}
+  let name = '';
+  if (options.seperate) {
+    name = `${options.presentation}_MAIN`;
+  } else {
+    name = options.presentation;
+  }
+  return name;
+};
 
 const makeAdd = (options) => {
-    return ` com.vclm.add = {
+  return ` com.vclm.add = {
         presentation: "${options.presentation}_ADD",
         veevaSwipe: "0",
         vclmAnimations: "1",
@@ -56,55 +54,55 @@ const makeAdd = (options) => {
           "${options.presentation}_PI",
         ],
         pagesTitles: []
-        };`
-}
+        };`;
+};
 
 const makeSlides = (options) => {
-    let slides = [];
-    for (let i = 0; i < options.slide; i++) {
-        let name = "";
-        if (i < 10) {
-            name = "00" + i;
-        } else if (i >= 10) {
-            name = "0" + i;
-        }
-        name = options.presentation + "_" + name;
-        slides.push(name);
+  let slides = [];
+  for (let i = 0; i < options.slide; i++) {
+    let name = "";
+    if (i < 10) {
+      name = "00" + i;
+    } else if (i >= 10) {
+      name = "0" + i;
     }
+    name = options.presentation + "_" + name;
+    slides.push(name);
+  }
 
 
-    let newSlides = slides.map(el => {
-        el = `'${el}'`;
-        return el;
-    });
-    return newSlides;
+  let newSlides = slides.map(el => {
+    el = `'${el}'`;
+    return el;
+  });
+  return newSlides;
 };
 
 
 const mtConfigPresentation = (options) => {
-    let data = '';
+  let data = '';
 
-    if (options.seperate) {
-        data += `
+  if (options.seperate) {
+    data += `
         case "${options.presentation}_MAIN":
             com.vclm.mtconfig = com.vclm.main;
             break;
         case "${options.presentation}_ADD":
             com.vclm.mtconfig = com.vclm.add;
             break;
-    `
-    } else {
-        data += `
+    `;
+  } else {
+    data += `
         case "${options.presentation}":
             com.vclm.mtconfig = com.vclm.main;
             break;
     
-        `
-    }
-    return data;
-}
+        `;
+  }
+  return data;
+};
 const makeMtJS = (options) => {
-    let mt = `
+  let mt = `
   var com = com || {};
 com.vclm = com.vclm || {};
 com.vclm.mt = {
@@ -710,6 +708,6 @@ $(document).ready(function() {
 const TOUCH = "click";
 
   
-  `
-    return mt;
-}
+  `;
+  return mt;
+};
